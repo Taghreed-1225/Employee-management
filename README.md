@@ -66,14 +66,6 @@ Or run the JAR file:
 java -jar target/employee-management-0.0.1-SNAPSHOT.jar
 ```
 
-### 4. Access the application
-
-- **Application**: http://localhost:8080
-- **Swagger UI**: http://localhost:8080/swagger-ui.html
-- **H2 Console**: http://localhost:8080/h2-console
-  - JDBC URL: `jdbc:h2:mem:testdb`
-  - Username: `sa`
-  - Password: (empty)
 
 ## Default Accounts
 
