@@ -2,6 +2,13 @@
 
 A comprehensive Spring Boot application for managing employees with authentication, authorization, and Excel export capabilities.
 
+## Demo Video
+
+<video width="800" controls>
+  <source src="https://github.com/Taghreed-1225/Employee-management/raw/main/%E2%80%AAEmployee%20Management%20System%20-%20Google%20Chrome%E2%80%AC%202025-08-17%2023-04-50.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
 ## Features
 
 ### 🔐 Authentication & Authorization
