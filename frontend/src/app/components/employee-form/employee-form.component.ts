@@ -8,104 +8,104 @@ import { EmployeeService, Employee } from '../../services/employee.service';
   selector: 'app-employee-form',
   template: `
     <div class="employee-form-container">
-      <h2 mat-dialog-title>{{ isEdit ? 'تعديل الموظف' : 'إضافة موظف جديد' }}</h2>
+      <h2 mat-dialog-title>{{ isEdit ? 'Edit Employee' : 'Add New Employee' }}</h2>
       
       <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
         <mat-dialog-content>
           <div class="form-row">
             <mat-form-field appearance="outline" class="full-width">
-              <mat-label>الاسم الأول</mat-label>
-              <input matInput formControlName="firstName" placeholder="أدخل الاسم الأول">
+              <mat-label>First Name</mat-label>
+              <input matInput formControlName="firstName" placeholder="Enter first name">
               <mat-error *ngIf="employeeForm.get('firstName')?.hasError('required')">
-                الاسم الأول مطلوب
+                First name is required
               </mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="full-width">
-              <mat-label>الاسم الأخير</mat-label>
-              <input matInput formControlName="lastName" placeholder="أدخل الاسم الأخير">
+              <mat-label>Last Name</mat-label>
+              <input matInput formControlName="lastName" placeholder="Enter last name">
               <mat-error *ngIf="employeeForm.get('lastName')?.hasError('required')">
-                الاسم الأخير مطلوب
+                Last name is required
               </mat-error>
             </mat-form-field>
           </div>
 
           <div class="form-row">
             <mat-form-field appearance="outline" class="full-width">
-              <mat-label>البريد الإلكتروني</mat-label>
-              <input matInput type="email" formControlName="email" placeholder="أدخل البريد الإلكتروني">
+              <mat-label>Email</mat-label>
+              <input matInput type="email" formControlName="email" placeholder="Enter email">
               <mat-error *ngIf="employeeForm.get('email')?.hasError('required')">
-                البريد الإلكتروني مطلوب
+                Email is required
               </mat-error>
               <mat-error *ngIf="employeeForm.get('email')?.hasError('email')">
-                بريد إلكتروني غير صحيح
+                Please enter a valid email
               </mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="full-width">
-              <mat-label>رقم الهاتف</mat-label>
-              <input matInput formControlName="phone" placeholder="أدخل رقم الهاتف">
+              <mat-label>Phone</mat-label>
+              <input matInput formControlName="phone" placeholder="Enter phone number">
               <mat-error *ngIf="employeeForm.get('phone')?.hasError('required')">
-                رقم الهاتف مطلوب
+                Phone number is required
               </mat-error>
             </mat-form-field>
           </div>
 
           <div class="form-row">
             <mat-form-field appearance="outline" class="full-width">
-              <mat-label>القسم</mat-label>
+              <mat-label>Department</mat-label>
               <mat-select formControlName="department">
-                <mat-option value="IT">تقنية المعلومات</mat-option>
-                <mat-option value="HR">الموارد البشرية</mat-option>
-                <mat-option value="Finance">المالية</mat-option>
-                <mat-option value="Marketing">التسويق</mat-option>
-                <mat-option value="Sales">المبيعات</mat-option>
-                <mat-option value="Operations">العمليات</mat-option>
+                <mat-option value="IT">Information Technology</mat-option>
+                <mat-option value="HR">Human Resources</mat-option>
+                <mat-option value="Finance">Finance</mat-option>
+                <mat-option value="Marketing">Marketing</mat-option>
+                <mat-option value="Sales">Sales</mat-option>
+                <mat-option value="Operations">Operations</mat-option>
               </mat-select>
               <mat-error *ngIf="employeeForm.get('department')?.hasError('required')">
-                القسم مطلوب
+                Department is required
               </mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="full-width">
-              <mat-label>المنصب</mat-label>
-              <input matInput formControlName="position" placeholder="أدخل المنصب">
+              <mat-label>Position</mat-label>
+              <input matInput formControlName="position" placeholder="Enter position">
               <mat-error *ngIf="employeeForm.get('position')?.hasError('required')">
-                المنصب مطلوب
+                Position is required
               </mat-error>
             </mat-form-field>
           </div>
 
           <div class="form-row">
             <mat-form-field appearance="outline" class="full-width">
-              <mat-label>الراتب</mat-label>
-              <input matInput type="number" formControlName="salary" placeholder="أدخل الراتب">
+              <mat-label>Salary</mat-label>
+              <input matInput type="number" formControlName="salary" placeholder="Enter salary">
               <mat-error *ngIf="employeeForm.get('salary')?.hasError('required')">
-                الراتب مطلوب
+                Salary is required
               </mat-error>
               <mat-error *ngIf="employeeForm.get('salary')?.hasError('min')">
-                الراتب يجب أن يكون أكبر من صفر
+                Salary must be greater than zero
               </mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="full-width">
-              <mat-label>تاريخ التعيين</mat-label>
+              <mat-label>Hire Date</mat-label>
               <input matInput [matDatepicker]="picker" formControlName="hireDate">
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
               <mat-error *ngIf="employeeForm.get('hireDate')?.hasError('required')">
-                تاريخ التعيين مطلوب
+                Hire date is required
               </mat-error>
             </mat-form-field>
           </div>
         </mat-dialog-content>
 
         <mat-dialog-actions align="end">
-          <button mat-button type="button" (click)="onCancel()">إلغاء</button>
+          <button mat-button type="button" (click)="onCancel()">Cancel</button>
           <button mat-raised-button color="primary" type="submit" 
                   [disabled]="employeeForm.invalid || loading">
             <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
-            <span *ngIf="!loading">{{ isEdit ? 'تحديث' : 'إضافة' }}</span>
+            <span *ngIf="!loading">{{ isEdit ? 'Update' : 'Add' }}</span>
           </button>
         </mat-dialog-actions>
       </form>
@@ -194,7 +194,7 @@ export class EmployeeFormComponent implements OnInit {
         this.employeeService.updateEmployee(this.data.employee.id!, employeeData).subscribe({
           next: () => {
             this.loading = false;
-            this.snackBar.open('تم تحديث الموظف بنجاح', 'إغلاق', {
+            this.snackBar.open('Employee updated successfully', 'Close', {
               duration: 3000,
               panelClass: 'success-snackbar'
             });
@@ -202,7 +202,7 @@ export class EmployeeFormComponent implements OnInit {
           },
           error: (error) => {
             this.loading = false;
-            this.snackBar.open('خطأ في تحديث الموظف', 'إغلاق', {
+            this.snackBar.open('Error updating employee', 'Close', {
               duration: 3000,
               panelClass: 'error-snackbar'
             });
@@ -212,7 +212,7 @@ export class EmployeeFormComponent implements OnInit {
         this.employeeService.createEmployee(employeeData).subscribe({
           next: () => {
             this.loading = false;
-            this.snackBar.open('تم إضافة الموظف بنجاح', 'إغلاق', {
+            this.snackBar.open('Employee added successfully', 'Close', {
               duration: 3000,
               panelClass: 'success-snackbar'
             });
@@ -220,7 +220,7 @@ export class EmployeeFormComponent implements OnInit {
           },
           error: (error) => {
             this.loading = false;
-            this.snackBar.open('خطأ في إضافة الموظف', 'إغلاق', {
+            this.snackBar.open('Error adding employee', 'Close', {
               duration: 3000,
               panelClass: 'error-snackbar'
             });

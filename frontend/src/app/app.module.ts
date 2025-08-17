@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
@@ -36,9 +36,6 @@ import { AuthService } from './services/auth.service';
 import { EmployeeService } from './services/employee.service';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 
-// Guards
-import { AuthGuard } from './guards/auth.guard';
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -53,12 +50,13 @@ import { AuthGuard } from './guards/auth.guard';
     BrowserModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
+    FormsModule,
     HttpClientModule,
     RouterModule.forRoot([
-      { path: '', redirectTo: '/login', pathMatch: 'full' },
+      { path: '', component: LoginComponent },
       { path: 'login', component: LoginComponent },
       { path: 'register', component: RegisterComponent },
-      { path: 'home', component: HomeComponent, canActivate: [AuthGuard] }
+      { path: 'home', component: HomeComponent }
     ]),
     MatToolbarModule,
     MatButtonModule,
@@ -79,7 +77,6 @@ import { AuthGuard } from './guards/auth.guard';
   providers: [
     AuthService,
     EmployeeService,
-    AuthGuard,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]

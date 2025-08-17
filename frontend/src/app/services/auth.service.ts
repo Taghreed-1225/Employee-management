@@ -7,6 +7,8 @@ export interface User {
   id: number;
   username: string;
   email: string;
+  firstName?: string;
+  lastName?: string;
 }
 
 export interface LoginRequest {
@@ -18,11 +20,17 @@ export interface RegisterRequest {
   username: string;
   email: string;
   password: string;
+  firstName: string;
+  lastName: string;
 }
 
 export interface AuthResponse {
-  token: string;
-  user: User;
+  success: boolean;
+  message: string;
+  data: {
+    token: string;
+    user: User;
+  };
 }
 
 @Injectable({
@@ -34,9 +42,20 @@ export class AuthService {
   public currentUser: Observable<User | null>;
 
   constructor(private http: HttpClient) {
-    this.currentUserSubject = new BehaviorSubject<User | null>(
-      JSON.parse(localStorage.getItem('currentUser') || 'null')
-    );
+    const storedUser = localStorage.getItem('currentUser');
+    let user = null;
+    
+    if (storedUser && storedUser !== 'null' && storedUser !== 'undefined') {
+      try {
+        user = JSON.parse(storedUser);
+      } catch (error) {
+        console.error('Error parsing stored user:', error);
+        localStorage.removeItem('currentUser');
+        user = null;
+      }
+    }
+    
+    this.currentUserSubject = new BehaviorSubject<User | null>(user);
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
@@ -44,24 +63,36 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
-  login(loginRequest: LoginRequest): Observable<AuthResponse> {
+  // Test API connection
+  testApi(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/test`);
+  }
+
+  // Login (matches your Postman)
+  login(username: string, password: string): Observable<AuthResponse> {
+    const loginRequest: LoginRequest = { username, password };
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, loginRequest)
       .pipe(map(response => {
-        // store user details and jwt token in local storage
-        localStorage.setItem('currentUser', JSON.stringify(response.user));
-        localStorage.setItem('token', response.token);
-        this.currentUserSubject.next(response.user);
+        if (response.success && response.data) {
+          // store user details and jwt token in local storage
+          localStorage.setItem('currentUser', JSON.stringify(response.data.user));
+          localStorage.setItem('token', response.data.token);
+          this.currentUserSubject.next(response.data.user);
+        }
         return response;
       }));
   }
 
+  // Register (matches your Postman)
   register(registerRequest: RegisterRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/register`, registerRequest)
       .pipe(map(response => {
-        // store user details and jwt token in local storage
-        localStorage.setItem('currentUser', JSON.stringify(response.user));
-        localStorage.setItem('token', response.token);
-        this.currentUserSubject.next(response.user);
+        if (response.success && response.data) {
+          // store user details and jwt token in local storage
+          localStorage.setItem('currentUser', JSON.stringify(response.data.user));
+          localStorage.setItem('token', response.data.token);
+          this.currentUserSubject.next(response.data.user);
+        }
         return response;
       }));
   }

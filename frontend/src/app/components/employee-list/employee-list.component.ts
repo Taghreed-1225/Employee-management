@@ -13,15 +13,15 @@ import { saveAs } from 'file-saver';
   template: `
     <div class="employee-list-container">
       <div class="header-actions">
-        <h2>قائمة الموظفين</h2>
+        <h2>Employee List</h2>
         <div class="actions">
           <button mat-raised-button color="primary" (click)="addEmployee()">
             <mat-icon>add</mat-icon>
-            إضافة موظف جديد
+            Add New Employee
           </button>
           <button mat-raised-button color="accent" (click)="exportToExcel()" [disabled]="loading">
             <mat-icon>download</mat-icon>
-            تصدير إلى Excel
+            Export to Excel
           </button>
         </div>
       </div>
@@ -30,61 +30,61 @@ import { saveAs } from 'file-saver';
         <table mat-table [dataSource]="dataSource" matSort>
           <!-- ID Column -->
           <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> الرقم </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
             <td mat-cell *matCellDef="let element"> {{element.id}} </td>
           </ng-container>
 
           <!-- First Name Column -->
           <ng-container matColumnDef="firstName">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> الاسم الأول </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> First Name </th>
             <td mat-cell *matCellDef="let element"> {{element.firstName}} </td>
           </ng-container>
 
           <!-- Last Name Column -->
           <ng-container matColumnDef="lastName">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> الاسم الأخير </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </th>
             <td mat-cell *matCellDef="let element"> {{element.lastName}} </td>
           </ng-container>
 
           <!-- Email Column -->
           <ng-container matColumnDef="email">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> البريد الإلكتروني </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
             <td mat-cell *matCellDef="let element"> {{element.email}} </td>
           </ng-container>
 
           <!-- Phone Column -->
           <ng-container matColumnDef="phone">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> رقم الهاتف </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone </th>
             <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
           </ng-container>
 
           <!-- Department Column -->
           <ng-container matColumnDef="department">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> القسم </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Department </th>
             <td mat-cell *matCellDef="let element"> {{element.department}} </td>
           </ng-container>
 
           <!-- Position Column -->
           <ng-container matColumnDef="position">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> المنصب </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Position </th>
             <td mat-cell *matCellDef="let element"> {{element.position}} </td>
           </ng-container>
 
           <!-- Salary Column -->
           <ng-container matColumnDef="salary">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> الراتب </th>
-            <td mat-cell *matCellDef="let element"> {{element.salary | currency:'EGP'}} </td>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Salary </th>
+            <td mat-cell *matCellDef="let element"> {{element.salary | currency:'USD'}} </td>
           </ng-container>
 
           <!-- Hire Date Column -->
           <ng-container matColumnDef="hireDate">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> تاريخ التعيين </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Hire Date </th>
             <td mat-cell *matCellDef="let element"> {{element.hireDate | date:'shortDate'}} </td>
           </ng-container>
 
           <!-- Actions Column -->
           <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef> الإجراءات </th>
+            <th mat-header-cell *matHeaderCellDef> Actions </th>
             <td mat-cell *matCellDef="let element">
               <div class="action-buttons">
                 <button mat-icon-button color="primary" (click)="editEmployee(element)">
@@ -106,7 +106,7 @@ import { saveAs } from 'file-saver';
 
       <div *ngIf="loading" class="loading-container">
         <mat-spinner></mat-spinner>
-        <p>جاري تحميل البيانات...</p>
+        <p>Loading data...</p>
       </div>
     </div>
   `,
@@ -208,12 +208,12 @@ export class EmployeeListComponent implements OnInit {
     this.loading = true;
     this.employeeService.getAllEmployees().subscribe({
       next: (response) => {
-        this.dataSource.data = response.data;
+        this.dataSource.data = response.data.content; // هنا التغيير
         this.loading = false;
       },
       error: (error) => {
         this.loading = false;
-        this.snackBar.open('خطأ في تحميل البيانات', 'إغلاق', {
+        this.snackBar.open('Error loading data', 'Close', {
           duration: 3000,
           panelClass: 'error-snackbar'
         });
@@ -248,17 +248,17 @@ export class EmployeeListComponent implements OnInit {
   }
 
   deleteEmployee(id: number) {
-    if (confirm('هل أنت متأكد من حذف هذا الموظف؟')) {
+    if (confirm('Are you sure you want to delete this employee?')) {
       this.employeeService.deleteEmployee(id).subscribe({
         next: () => {
-          this.snackBar.open('تم حذف الموظف بنجاح', 'إغلاق', {
+          this.snackBar.open('Employee deleted successfully', 'Close', {
             duration: 3000,
             panelClass: 'success-snackbar'
           });
           this.loadEmployees();
         },
         error: (error) => {
-          this.snackBar.open('خطأ في حذف الموظف', 'إغلاق', {
+          this.snackBar.open('Error deleting employee', 'Close', {
             duration: 3000,
             panelClass: 'error-snackbar'
           });
@@ -273,14 +273,14 @@ export class EmployeeListComponent implements OnInit {
       next: (blob) => {
         saveAs(blob, 'employees.xlsx');
         this.loading = false;
-        this.snackBar.open('تم تصدير البيانات بنجاح', 'إغلاق', {
+        this.snackBar.open('Data exported successfully', 'Close', {
           duration: 3000,
           panelClass: 'success-snackbar'
         });
       },
       error: (error) => {
         this.loading = false;
-        this.snackBar.open('خطأ في تصدير البيانات', 'إغلاق', {
+        this.snackBar.open('Error exporting data', 'Close', {
           duration: 3000,
           panelClass: 'error-snackbar'
         });

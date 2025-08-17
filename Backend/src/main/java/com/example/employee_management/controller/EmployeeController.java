@@ -31,7 +31,7 @@ import java.util.Optional;
 @RequestMapping("/api/employees")
 @Tag(name = "Employee Management", description = "Employee CRUD operations")
 @SecurityRequirement(name = "bearerAuth")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:4200")
 @RequiredArgsConstructor
 public class EmployeeController {
 

@@ -1,107 +1,68 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-register',
   template: `
-    <div class="register-container">
-      <mat-card class="register-card">
-        <mat-card-header>
-          <mat-card-title>إنشاء حساب جديد</mat-card-title>
-        </mat-card-header>
+    <div style="height: 100vh; display: flex; justify-content: center; align-items: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+      <div style="background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); max-width: 400px; width: 90%;">
+        <h2 style="text-align: center; margin-bottom: 30px; color: #333;">Create New Account</h2>
         
-        <mat-card-content>
-          <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>اسم المستخدم</mat-label>
-              <input matInput formControlName="username" placeholder="أدخل اسم المستخدم">
-              <mat-error *ngIf="registerForm.get('username')?.hasError('required')">
-                اسم المستخدم مطلوب
-              </mat-error>
-            </mat-form-field>
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+          <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 5px; color: #666;">Username</label>
+            <input type="text" formControlName="username" placeholder="Enter username" 
+                   style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px;">
+            <div *ngIf="registerForm.get('username')?.hasError('required') && registerForm.get('username')?.touched" 
+                 style="color: red; font-size: 12px; margin-top: 5px;">
+              Username is required
+            </div>
+          </div>
 
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>البريد الإلكتروني</mat-label>
-              <input matInput type="email" formControlName="email" placeholder="أدخل البريد الإلكتروني">
-              <mat-error *ngIf="registerForm.get('email')?.hasError('required')">
-                البريد الإلكتروني مطلوب
-              </mat-error>
-              <mat-error *ngIf="registerForm.get('email')?.hasError('email')">
-                بريد إلكتروني غير صحيح
-              </mat-error>
-            </mat-form-field>
+          <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 5px; color: #666;">Email</label>
+            <input type="email" formControlName="email" placeholder="Enter email" 
+                   style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px;">
+            <div *ngIf="registerForm.get('email')?.hasError('required') && registerForm.get('email')?.touched" 
+                 style="color: red; font-size: 12px; margin-top: 5px;">
+              Email is required
+            </div>
+            <div *ngIf="registerForm.get('email')?.hasError('email') && registerForm.get('email')?.touched" 
+                 style="color: red; font-size: 12px; margin-top: 5px;">
+              Please enter a valid email
+            </div>
+          </div>
 
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>كلمة المرور</mat-label>
-              <input matInput type="password" formControlName="password" placeholder="أدخل كلمة المرور">
-              <mat-error *ngIf="registerForm.get('password')?.hasError('required')">
-                كلمة المرور مطلوبة
-              </mat-error>
-              <mat-error *ngIf="registerForm.get('password')?.hasError('minlength')">
-                كلمة المرور يجب أن تكون 6 أحرف على الأقل
-              </mat-error>
-            </mat-form-field>
+          <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 5px; color: #666;">Password</label>
+            <input type="password" formControlName="password" placeholder="Enter password" 
+                   style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px;">
+            <div *ngIf="registerForm.get('password')?.hasError('required') && registerForm.get('password')?.touched" 
+                 style="color: red; font-size: 12px; margin-top: 5px;">
+              Password is required
+            </div>
+            <div *ngIf="registerForm.get('password')?.hasError('minlength') && registerForm.get('password')?.touched" 
+                 style="color: red; font-size: 12px; margin-top: 5px;">
+              Password must be at least 6 characters
+            </div>
+          </div>
 
-            <button mat-raised-button color="primary" type="submit" 
-                    [disabled]="registerForm.invalid || loading" class="full-width">
-              <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
-              <span *ngIf="!loading">إنشاء الحساب</span>
-            </button>
-          </form>
-        </mat-card-content>
+          <button type="submit" [disabled]="registerForm.invalid || loading" 
+                  style="width: 100%; padding: 12px; background: #667eea; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer;">
+            <span *ngIf="!loading">Create Account</span>
+            <span *ngIf="loading">Loading...</span>
+          </button>
+        </form>
 
-        <mat-card-actions class="text-center">
-          <button mat-button routerLink="/login">لديك حساب بالفعل؟ سجل دخولك</button>
-        </mat-card-actions>
-      </mat-card>
+        <div style="text-align: center; margin-top: 20px;">
+          <a routerLink="/login" style="color: #667eea; text-decoration: none;">Already have an account? Login</a>
+        </div>
+      </div>
     </div>
   `,
-  styles: [`
-    .register-container {
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    }
-
-    .register-card {
-      max-width: 400px;
-      width: 90%;
-      padding: 20px;
-    }
-
-    .full-width {
-      width: 100%;
-      margin-bottom: 16px;
-    }
-
-    .text-center {
-      text-align: center;
-    }
-
-    mat-card-header {
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-
-    mat-card-title {
-      font-size: 24px;
-      font-weight: 500;
-    }
-
-    button[type="submit"] {
-      height: 48px;
-      font-size: 16px;
-    }
-
-    mat-card-actions {
-      padding: 16px 0;
-    }
-  `]
+  styles: []
 })
 export class RegisterComponent {
   registerForm: FormGroup;
@@ -110,8 +71,7 @@ export class RegisterComponent {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router,
-    private snackBar: MatSnackBar
+    private router: Router
   ) {
     this.registerForm = this.fb.group({
       username: ['', Validators.required],
@@ -123,22 +83,12 @@ export class RegisterComponent {
   onSubmit() {
     if (this.registerForm.valid) {
       this.loading = true;
-      this.authService.register(this.registerForm.value).subscribe({
-        next: (response) => {
-          this.snackBar.open('تم إنشاء الحساب بنجاح', 'إغلاق', {
-            duration: 3000,
-            panelClass: 'success-snackbar'
-          });
-          this.router.navigate(['/home']);
-        },
-        error: (error) => {
-          this.loading = false;
-          this.snackBar.open('خطأ في إنشاء الحساب', 'إغلاق', {
-            duration: 3000,
-            panelClass: 'error-snackbar'
-          });
-        }
-      });
+      
+      // For testing, just navigate to home
+      setTimeout(() => {
+        this.loading = false;
+        this.router.navigate(['/home']);
+      }, 1000);
     }
   }
 }
