@@ -3,10 +3,10 @@ spring:
     name: employee-management
 
   datasource:
-    url: jdbc:mysql://localhost:3306/Employee
+    url: jdbc:mysql://localhost:3306/Employee?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: 123456
+    password: "123456"
 
   jpa:
     hibernate:
@@ -42,6 +42,14 @@ logging:
 
 springdoc:
   api-docs:
-    path: /api-docs
+    path: /v3/api-docs
+    enabled: true
   swagger-ui:
     path: /swagger-ui.html
+    enabled: true
+    # Enable Swagger UI configurations
+    operations-sorter: method
+    tags-sorter: alpha
+    try-it-out-enabled: true
+  show-actuator: false
+  paths-to-match: /api/**
