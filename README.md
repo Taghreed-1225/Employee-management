@@ -4,10 +4,9 @@ A comprehensive Spring Boot application for managing employees with authenticati
 
 ## Demo Video
 
-<video width="800" controls>
-  <source src="https://github.com/Taghreed-1225/Employee-management/raw/main/%E2%80%AAEmployee%20Management%20System%20-%20Google%20Chrome%E2%80%AC%202025-08-17%2023-04-50.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+[![Employee Management System Demo](https://img.youtube.com/vi/VIDEO_ID/0.jpg)](https://github.com/Taghreed-1225/Employee-management/blob/main/%E2%80%AAEmployee%20Management%20System%20-%20Google%20Chrome%E2%80%AC%202025-08-17%2023-04-50.mp4)
+
+Click the image above to watch the demo video.
 
 ## Features
 
